@@ -1,0 +1,51 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Maven Test
+
+on:
+  push:
+    branches:
+      - '*'
+
+  # allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        server-id: github
+        server-username: USERNAME
+        server-password: GH_PAT_FOR_ACTIONS_TOKEN
+    - name: Show file content
+      run: cat ~/.m2/settings.xml
+    - name: maven-settings
+      uses: s4u/maven-settings-action@v3.0.0
+      with:
+        servers: '[{"id": "github", "username": "dummy", "password": "${GITHUB_TOKEN_REF}"}]'
+        githubServer: false
+    - name: Show file content v2
+      run: cat ~/.m2/settings.xml
+    - name: Run tests with Maven
+      run: mvn test
+      env:
+        GITHUB_TOKEN_REF: ${{ secrets.GH_PAT_FOR_ACTIONS_TOKEN }}
+        USERNAME: ${{ secrets.USERNAME }}
+    - name: Install
+      run: mvn clean -U install
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT_FOR_ACTIONS_TOKEN }}
+        USERNAME: ${{ secrets.USERNAME }}
