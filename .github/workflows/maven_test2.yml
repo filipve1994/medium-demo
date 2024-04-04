@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Maven Test
+name: Maven Test v2
 
 on:
   push:
