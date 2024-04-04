@@ -32,6 +32,8 @@ jobs:
         server-password: GH_PAT_FOR_ACTIONS_TOKEN
     - name: Show file content
       run: cat ~/.m2/settings.xml
+    - name: show env
+      run: echo "$GITHUB_CONTEXT"
     - name: maven-settings
       uses: s4u/maven-settings-action@v3.0.0
       with:
