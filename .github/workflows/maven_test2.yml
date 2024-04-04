@@ -56,20 +56,23 @@ jobs:
       env:
         ENV_CONTEXT: ${{ toJSON(env) }}
       run: echo "$ENV_CONTEXT"
-    - name: maven-settings
-      uses: s4u/maven-settings-action@v3.0.0
-      with:
-        servers: '[{"id": "github", "username": "dummy", "password": "${GITHUB_TOKEN_REF}"}]'
-        githubServer: false
+    #- name: maven-settings
+    #  uses: s4u/maven-settings-action@v3.0.0
+    #  with:
+    #    servers: '[{"id": "github", "username": "dummy", "password": "${GITHUB_TOKEN_REF}"}]'
+    #    githubServer: false
     - name: Show file content v2
       run: cat ~/.m2/settings.xml
     - name: Run tests with Maven
       run: mvn test
       env:
         GITHUB_TOKEN_REF: ${{ secrets.GH_PAT_FOR_ACTIONS_TOKEN }}
+        GH_PAT_FOR_ACTIONS_TOKEN: ${{ secrets.GH_PAT_FOR_ACTIONS_TOKEN }}
         USERNAME: ${{ secrets.USERNAME }}
     - name: Install
       run: mvn clean -U install
       env:
         GITHUB_TOKEN: ${{ secrets.GH_PAT_FOR_ACTIONS_TOKEN }}
+        GITHUB_TOKEN_REF: ${{ secrets.GH_PAT_FOR_ACTIONS_TOKEN }}
+        GH_PAT_FOR_ACTIONS_TOKEN: ${{ secrets.GH_PAT_FOR_ACTIONS_TOKEN }}
         USERNAME: ${{ secrets.USERNAME }}
