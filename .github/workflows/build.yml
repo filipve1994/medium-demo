@@ -32,6 +32,6 @@ jobs:
         sed -i 's/PASSWORD/${{ secrets.PASSWORD }}/g' .github/settings.xml
 
     - name: Install
-      run: ./mvnw clean install -s .github/settings.xml
+      run: ./mvnw clean -U install -X -s .github/settings.xml
       env:
         GITHUB_TOKEN: ${{ secrets.github.token }}
